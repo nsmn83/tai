@@ -1,0 +1,15 @@
+#środowisko python
+backend/venv/
+__pycache__/
+*.pyc
+*.sqlite3
+
+#moduły
+frontend/node_modules/
+
+#logi
+*.log
+
+#lokalne ustawienia edytora
+.idea/
+
