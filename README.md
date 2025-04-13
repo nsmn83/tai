@@ -1,8 +1,7 @@
 # TAI
 ## Technologie Aplikacji Internetowych - projekt zaliczeniowy 📚
 Repozytorium zawiera projekt (w trakcie realizacji), którego celem utworzenie jest aplikacji internetowej "Rejestr książek".
-Na podstawie tekstowych recenzji wyliczany będzie sentyment pokazujący nastawienie czytelników do danych pozycji.
-Na podstawie ocen użytkownika będą mu polecane kolejne pozycje do przeczytania.<br>
+Aplikacja będzie forum to wyrażania swoich opinii na temat książek.
 
 Użytkownik będzie mógł:<br>
 🔵 utworzyć konto<br>
