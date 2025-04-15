@@ -37,6 +37,11 @@ export default function Home() {
         try{
             const response = await axios.post("http://127.0.0.1:8000/api/register/", formData)
             console.log("Rejestracja udana!", response.data)
+
+            const { access, refresh } = response.data.tokens;
+            localStorage.setItem("accessToken", response.data.tokens.access);
+            localStorage.setItem("refreshToken", response.data.tokens.refresh);
+
             setSuccessMessage("Rejestracja udana!");
         }
         catch(error){

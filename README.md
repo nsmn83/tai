@@ -1,5 +1,5 @@
-# TAI
-## Technologie Aplikacji Internetowych - projekt zaliczeniowy 📚
+# PIWSI
+## Projektowanie i wdrażanie systemów informatycznych - projekt zaliczeniowy 📚
 Repozytorium zawiera projekt (w trakcie realizacji), którego celem utworzenie jest aplikacji internetowej "Rejestr książek".
 Aplikacja będzie forum to wyrażania swoich opinii na temat książek.
 

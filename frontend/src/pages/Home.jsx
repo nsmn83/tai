@@ -37,7 +37,11 @@ export default function Home() {
         try{
           const accessToken = localStorage.getItem("accessToken");
           const refreshToken = localStorage.getItem("refreshToken");
-    
+
+          console.log("access:", localStorage.getItem("accessToken"));
+          console.log("refresh:", localStorage.getItem("refreshToken"));
+
+
           if(accessToken && refreshToken) {
             const config = {
               headers: {
