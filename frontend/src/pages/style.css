@@ -1,0 +1,117 @@
+/* style.css */
+
+/* Tło całej strony */
+body {
+    /* background-color: #a7a6ff; /* Niebieskie tło */
+    background-color: #4d47f5;
+    /*background-image: linear-gradient(to bottom right, #4d47f5, #bc5bfc); */
+    /* background-image: linear-gradient(to bottom right, #e3e2c1, #82bbc2); */
+    background-image: linear-gradient(to bottom right, #e3e2c1, #82bbc2);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Wysokość całego okna */
+}
+
+/* Kwadrat z zaokrąglonymi rogami na formularz */
+.form-container {
+    background-color: white; /* Kolor tła formularza */
+    padding: 20px;
+    border-radius: 15px; /* Zaokrąglone rogi */
+    width: 300px; /* Szerokość formularza */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Cień wokół formularza */
+    color: black;
+}
+
+.title {
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    font-size: 300px;
+    color: #333;
+
+}
+
+/* Styl dla nagłówka formularza */
+h2 {
+    text-align: center;
+    color: #333;
+}
+
+/* Styl dla przycisków */
+button {
+    width: 100%; /* Szerokość przycisku */
+    padding: 10px;
+    background-color: #333;
+    /*background-color: #4d47f5;*/ /* Niebieski kolor */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:disabled {
+    background-color: #ddd; /* Kolor przycisku, gdy jest zablokowany */
+    cursor: not-allowed;
+}
+
+/* Styl dla linku */
+a {
+    text-decoration: none;
+    color: #4A90E2; /* Kolor niebieski */
+}
+
+.hide-navbar {
+    display: none;
+}
+
+nav {
+    background-color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 45px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.ride-item {
+    background-color: white; /* Białe tło */
+    border-radius: 15px; /* Zaokrąglone rogi */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Cień wokół elementu */
+    padding: 15px; /* Przestrzeń wewnętrzna (padding) */
+    margin-bottom: 15px; /* Odstęp między elementami listy */
+    list-style-type: none;
+}
+
+.rides-container {
+    text-align: left;
+    background-color: white; /* Kolor tła formularza */
+    padding: 20px;
+    border-radius: 15px; /* Zaokrąglone rogi */
+    width: 900px; /* Szerokość formularza */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Cień wokół formularza */
+    color: black;
+    margin-left: 15px; /* Odstęp od lewej */
+
+}

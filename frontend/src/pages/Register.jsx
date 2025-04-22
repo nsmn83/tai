@@ -1,8 +1,10 @@
 import React, {use, useState} from 'react';
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
 
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         username:"",
         email:"",
@@ -42,17 +44,18 @@ export default function Home() {
             localStorage.setItem("accessToken", response.data.tokens.access);
             localStorage.setItem("refreshToken", response.data.tokens.refresh);
 
-            setSuccessMessage("Rejestracja udana!");
+            //Przejscie do strony glownej po udanej rejestracji
+            navigate("/");
         }
         catch(error){
             console.log("Błąd rejestracji!", error.response?.data)
             if(error.response && error.response.data){
                 Object.keys(error.response.data).forEach(field => {
-                  const errorMessages = error.response.data[field];  
-                  if(errorMessages && errorMessages.length > 0){
-                    setError(errorMessages[0]);
-                  }
-            })
+                    const errorMessages = error.response.data[field];
+                    if(errorMessages && errorMessages.length > 0){
+                        setError(errorMessages[0]);
+                    }
+                })
             }
         }
         finally{
@@ -62,7 +65,7 @@ export default function Home() {
 
 
     return (
-        <div>
+        <div className="form-container">
             {error && <p style={{color:"red"}}>{error}</p>}
             {successMessage && <p style={{color:"green"}}>{successMessage}</p>}
             <h2>Register</h2>
@@ -77,8 +80,8 @@ export default function Home() {
             <br/>
             <button type="submit" disabled={isLoading} onClick={handleSubmit}>
                 Register
-                </button>
-            
+            </button>
+
 
         </div>
     );

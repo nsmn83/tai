@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
-export default function Home() {
+export default function Login() {
+        const navigate = useNavigate();
         const [formData, setFormData] = useState({
             email:"",
             password:"",
@@ -34,12 +36,15 @@ export default function Home() {
             setSuccessMessage("Logowanie udane!");
             localStorage.setItem("accessToken", response.data.tokens.access);
             localStorage.setItem("refreshToken", response.data.tokens.refresh);
+
+            //Przejscie do strony glownej po udanym logowaniu
+            navigate("/");
         }
         catch(error){
             console.log("Błąd logowania!", error.response?.data)
             if(error.response && error.response.data){
                 Object.keys(error.response.data).forEach(field => {
-                  const errorMessages = error.response.data[field];  
+                  const errorMessages = error.response.data[field];
                   if(errorMessages && errorMessages.length > 0){
                     setError(errorMessages[0]);
                   }
@@ -52,7 +57,7 @@ export default function Home() {
     }
 
     return (
-        <div>
+        <div className="form-container">
             {error && <p style={{color:"red"}}>{error}</p>}
             {successMessage && <p style={{color:"green"}}>{successMessage}</p>}
             <h2>Login</h2>
@@ -64,7 +69,7 @@ export default function Home() {
             <button type="submit" disabled={isLoading} onClick={handleSubmit}>
                 Login
                 </button>
-            
+
 
         </div>
     )
