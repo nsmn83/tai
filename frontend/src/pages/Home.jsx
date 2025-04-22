@@ -39,7 +39,6 @@ export default function Home() {
         <div>
             {isLoggedIn ? (
                 <>
-                <h2> Witaj użytkowniku {username}!</h2>
                     <Rides />
                 </>
             ):(

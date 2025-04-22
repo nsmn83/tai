@@ -6,13 +6,12 @@ body {
     background-color: #4d47f5;
     /*background-image: linear-gradient(to bottom right, #4d47f5, #bc5bfc); */
     /* background-image: linear-gradient(to bottom right, #e3e2c1, #82bbc2); */
-    background-image: linear-gradient(to bottom right, #e3e2c1, #82bbc2);
+    background-image: linear-gradient(to bottom right, #acb03f, #0b6e25);
     margin: 0;
     padding: 0;
-    display: flex;
     justify-content: center;
+    display: flex;
     align-items: center;
-    height: 100vh; /* Wysokość całego okna */
 }
 
 /* Kwadrat z zaokrąglonymi rogami na formularz */
@@ -28,7 +27,7 @@ body {
 .title {
     font-family: 'Poppins', sans-serif;
     text-align: center;
-    font-size: 300px;
+    font-size: 50px;
     color: #333;
 
 }
@@ -101,17 +100,25 @@ nav ul li a {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Cień wokół elementu */
     padding: 15px; /* Przestrzeń wewnętrzna (padding) */
     margin-bottom: 15px; /* Odstęp między elementami listy */
+    margin-left: -25px;
     list-style-type: none;
+    cursor: pointer;
 }
 
 .rides-container {
+    list-style-type: none; 
+    margin-top: 60px;
     text-align: left;
     background-color: white; /* Kolor tła formularza */
     padding: 20px;
     border-radius: 15px; /* Zaokrąglone rogi */
-    width: 900px; /* Szerokość formularza */
+    width: 1200px; /* Szerokość formularza */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Cień wokół formularza */
     color: black;
-    margin-left: 15px; /* Odstęp od lewej */
 
+}
+
+.rides-title {
+    text-align: left;
+    margin-left: 20px; /* opcjonalnie: dodaje trochę luzu od lewej */
 }
