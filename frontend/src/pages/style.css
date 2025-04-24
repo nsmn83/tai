@@ -100,9 +100,48 @@ nav ul li a {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Cień wokół elementu */
     padding: 15px; /* Przestrzeń wewnętrzna (padding) */
     margin-bottom: 15px; /* Odstęp między elementami listy */
-    margin-left: -25px;
+    margin-left: -40px;
     list-style-type: none;
     cursor: pointer;
+}
+
+.searchbar {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    gap: 10px;
+   flex-wrap: wrap;
+    align-items: center;
+}
+
+.search-input {
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 14px;
+    flex: 1;
+    margin-left: auto;
+    width: 100px;
+}
+
+.search-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    margin-left: auto;
+    width: 150px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search-button:hover {
+    background-color: #0056b3;
 }
 
 .rides-container {

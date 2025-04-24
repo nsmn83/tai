@@ -7,8 +7,8 @@ function Rides() {
 
     const navigate = useNavigate();
 
-    const handleClick = (id) => {
-        navigate(`/przejazd/${id}`);
+    const handleClick = (przejazd) => {
+        navigate(`/przejazd/${przejazd.id}`);
     }
 
     const przejazdy = [
@@ -37,23 +37,47 @@ function Rides() {
             godzina: "10:00"
         },
         {
-            id: 1,
+            id: 4,
             start: "Warszawa",
-            koniec: "Kraków",
+            koniec: "Wrocław",
             kierowca: "Jan Kowalski",
             data: "2025-04-22",
             godzina: "08:30"
         },
         {
-            id: 2,
+            id: 5,
             start: "Gdańsk",
-            koniec: "Poznań",
+            koniec: "Warszawa",
             kierowca: "Anna Nowak",
             data: "2025-04-23",
             godzina: "14:15"
         },
         {
-            id: 3,
+            id: 6,
+            start: "Wrocław",
+            koniec: "Warszawa",
+            kierowca: "Piotr Zieliński",
+            data: "2025-04-24",
+            godzina: "10:00"
+        },
+        {
+            id: 7,
+            start: "Warszawa",
+            koniec: "Gdynia",
+            kierowca: "Jan Kowalski",
+            data: "2025-04-22",
+            godzina: "08:30"
+        },
+        {
+            id: 8,
+            start: "Gdańsk",
+            koniec: "Wrocław",
+            kierowca: "Anna Nowak",
+            data: "2025-04-23",
+            godzina: "14:15"
+        },
+        {
+            id: 9,
             start: "Wrocław",
             koniec: "Łódź",
             kierowca: "Piotr Zieliński",
@@ -61,15 +85,15 @@ function Rides() {
             godzina: "10:00"
         },
         {
-            id: 1,
+            id: 10,
             start: "Warszawa",
-            koniec: "Kraków",
+            koniec: "Pisczyn",
             kierowca: "Jan Kowalski",
             data: "2025-04-22",
             godzina: "08:30"
         },
         {
-            id: 2,
+            id: 11,
             start: "Gdańsk",
             koniec: "Poznań",
             kierowca: "Anna Nowak",
@@ -77,33 +101,9 @@ function Rides() {
             godzina: "14:15"
         },
         {
-            id: 3,
+            id: 12,
             start: "Wrocław",
-            koniec: "Łódź",
-            kierowca: "Piotr Zieliński",
-            data: "2025-04-24",
-            godzina: "10:00"
-        },
-        {
-            id: 1,
-            start: "Warszawa",
-            koniec: "Kraków",
-            kierowca: "Jan Kowalski",
-            data: "2025-04-22",
-            godzina: "08:30"
-        },
-        {
-            id: 2,
-            start: "Gdańsk",
-            koniec: "Poznań",
-            kierowca: "Anna Nowak",
-            data: "2025-04-23",
-            godzina: "14:15"
-        },
-        {
-            id: 3,
-            start: "Wrocław",
-            koniec: "Łódź",
+            koniec: "Markuszów",
             kierowca: "Piotr Zieliński",
             data: "2025-04-24",
             godzina: "10:00"
@@ -112,11 +112,22 @@ function Rides() {
 
     const [przejazd, setPrzejazd] = useState(przejazdy);
     const [searchVal, setSearchVal] = useState("");
+    const [searchVal2, setSearchVal2] = useState("");
+    const [searchDate, setSearchDate] = useState("");
     function handleSearchClick() {
-        if(searchVal === "") {setPrzejazd(przejazdy); return;}
+        if (searchVal === "" && searchVal2 === "" && searchDate === "") {
+            setPrzejazd(przejazdy);
+            return;
+        }
+
         const filterBySearch = przejazdy.filter((item) => {
-            if (item.start.toLoweCase().includes(searchVal.toLowerCase())) {return item;}
-        })
+            const matchesStart = item.start.toLowerCase().includes(searchVal.toLowerCase());
+            const matchesEnd = item.koniec.toLowerCase().includes(searchVal2.toLowerCase());
+            const matchesDate = searchDate === "" || item.data === searchDate;
+
+            return matchesStart && matchesEnd && matchesDate;
+        });
+
         setPrzejazd(filterBySearch);
     }
     
@@ -125,14 +136,28 @@ function Rides() {
 
             <h2 className='title'> PRZEJAZDY </h2>
             <div>
-                <p>FILTROWANIE</p>
-                <div>
-                <input onChange={e => setSearchVal(e.target.value)}>
-                </input>
-            </div>
+                <div className="searchbar">
+                    <input
+                        className="search-input"
+                        value={searchVal}
+                        onChange={e => setSearchVal(e.target.value)}
+                    />
+                    <input
+                        className="search-input"
+                        value={searchVal2}
+                        onChange={e => setSearchVal2(e.target.value)}
+                    />
+                    <input
+                        className="search-input"
+                        type="date"
+                        value={searchDate}
+                        onChange={e => setSearchDate(e.target.value)}
+                    />
+                    <button className="search-button" onClick={handleSearchClick}>Filtruj</button>
+                </div>
             </div>
             <ul>
-                {przejazdy.map(przejazd => (
+                {przejazd.map(przejazd => (
                     <li key={przejazd.id} className="ride-item" onClick={() => handleClick(przejazd)}>
                         <p><strong>Trasa: </strong> {przejazd.start} - {przejazd.koniec}
                         <strong> Data: </strong> {przejazd.data}
