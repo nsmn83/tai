@@ -43,9 +43,7 @@ export default function Home() {
                 </>
             ):(
                 <>
-                    <h1 className="title">
-                        DriveBud
-                    </h1>
+                    <Rides />
                 </>
             )}
         </div>

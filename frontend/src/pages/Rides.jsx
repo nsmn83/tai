@@ -8,7 +8,7 @@ function Rides() {
     const navigate = useNavigate();
 
     const handleClick = (przejazd) => {
-        navigate(`/przejazd/${przejazd.id}`);
+        navigate(`/przejazd/${przejazd.id}`, { state: { przejazd } });
     }
 
     const przejazdy = [
@@ -138,11 +138,13 @@ function Rides() {
             <div>
                 <div className="searchbar">
                     <input
+                        placeholder='Miejsce wyjazdu'
                         className="search-input"
                         value={searchVal}
                         onChange={e => setSearchVal(e.target.value)}
                     />
                     <input
+                        placeholder='Miejsce docelowe'
                         className="search-input"
                         value={searchVal2}
                         onChange={e => setSearchVal2(e.target.value)}
