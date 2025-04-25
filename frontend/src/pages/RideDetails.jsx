@@ -13,23 +13,26 @@ export default function RideDetails() {
 
     if (!przejazd) {
         return (
-            <div className="rides-container">
+            <div className="rides-details-container">
                 <p>Brak danych o przejeździe..</p>
             </div>
         );
     }
 
     return (
-        <div className="rides-container">
+        <div className="rides-details-container">
+            <div>
             <h2>Szczegóły przejazdu</h2>
             <p>To są szczegóły dla przejazdu o ID: {przejazd.id}</p>
+            <p> Hej, nazywam się Piotr i będe jechał zieloną Skodą Fabią.</p>
             <p>Start: {przejazd.start}</p>
             <p>Cel: {przejazd.koniec}</p>
             <p>Kierowca: {przejazd.kierowca}</p>
             <p>Data: {przejazd.data}</p>
             <p>Godz: {przejazd.godzina}</p>
-            <img src={testImage} alt="test" />
-            <button onClick = {() => handleClick}>Dołącz do przejazdu!</button>
+            <button className="request-button" onClick = {() => handleClick}>Dołącz do przejazdu!</button>
+            </div>
+            <img className="map-image" src={testImage} alt="test" />
         </div>
     );
 }

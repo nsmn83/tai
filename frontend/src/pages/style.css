@@ -1,8 +1,8 @@
 /* style.css */
 
-/* Tło całej strony */
+/* Tło strony */
 body {
-    /* background-color: #a7a6ff; /* Niebieskie tło */
+    /* Tło jeśli przeglądarka nie oblsuguje gradientu */
     background-color: #4d47f5;
     /*background-image: linear-gradient(to bottom right, #4d47f5, #bc5bfc); */
     /* background-image: linear-gradient(to bottom right, #e3e2c1, #82bbc2); */
@@ -12,9 +12,11 @@ body {
     justify-content: center;
     display: flex;
     align-items: center;
+    width: 100vw;
+    height: 100hv;
 }
 
-/* Kwadrat z zaokrąglonymi rogami na formularz */
+/* Styl formularza do logowania / rejestracji */
 .form-container {
     background-color: white; /* Kolor tła formularza */
     padding: 20px;
@@ -24,12 +26,12 @@ body {
     color: black;
 }
 
+/* Styl nazwy aplikacji */
 .title {
     font-family: 'Poppins', sans-serif;
     text-align: center;
     font-size: 50px;
     color: #333;
-
 }
 
 /* Styl dla nagłówka formularza */
@@ -43,7 +45,6 @@ button {
     width: 100%; /* Szerokość przycisku */
     padding: 10px;
     background-color: #333;
-    /*background-color: #4d47f5;*/ /* Niebieski kolor */
     color: white;
     border: none;
     border-radius: 5px;
@@ -95,11 +96,11 @@ nav ul li a {
 }
 
 .ride-item {
-    background-color: white; /* Białe tło */
-    border-radius: 15px; /* Zaokrąglone rogi */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Cień wokół elementu */
-    padding: 15px; /* Przestrzeń wewnętrzna (padding) */
-    margin-bottom: 15px; /* Odstęp między elementami listy */
+    background-color: white;
+    border-radius: 15px; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); 
+    padding: 15px; 
+    margin-bottom: 15px; 
     margin-left: -40px;
     list-style-type: none;
     cursor: pointer;
@@ -144,20 +145,49 @@ nav ul li a {
     background-color: #0056b3;
 }
 
-.rides-container {
+.rides-container-list {
     list-style-type: none; 
     margin-top: 60px;
     text-align: left;
     background-color: white; /* Kolor tła formularza */
     padding: 20px;
     border-radius: 15px; /* Zaokrąglone rogi */
-    width: 1200px; /* Szerokość formularza */
+    width: 50vw; /* Szerokość formularza */
+    margin-left: auto;
+    margin-right: auto;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Cień wokół formularza */
     color: black;
+}
 
+.rides-details-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    list-style-type: none; 
+    margin-top: 60px;
+    text-align: left;
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px;
+    width: 70vw;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: black;
+}
+
+
+.map-image {
+    border-radius: 50px;
+    width: 50%; /* Szerokość formularza */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Cień wokół formularza */
+    color: black;
 }
 
 .rides-title {
     text-align: left;
     margin-left: 20px; /* opcjonalnie: dodaje trochę luzu od lewej */
+}
+
+.request-button {
+    width: 50%;
 }
