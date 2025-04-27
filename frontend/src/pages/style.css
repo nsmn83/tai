@@ -191,3 +191,8 @@ nav ul li a {
 .request-button {
     width: 50%;
 }
+
+.description-input {
+    width: 50%;
+    height: 100%;
+}

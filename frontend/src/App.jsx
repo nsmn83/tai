@@ -4,7 +4,8 @@ import Home from './pages/Home';
 import Layout from './pages/Layout';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import RideDetails from './pages/RideDetails'; 
+import RideDetails from './pages/RideDetails';
+import MyRides from "./pages/MyRides.jsx";
 
 function App() {
 
@@ -15,7 +16,9 @@ function App() {
       <Route index element={<Home/>}/>
       <Route path="login" element={<Login/>}/>
       <Route path="register" element={<Register/>}/>
-      <Route path="/przejazd/:id" element={<RideDetails />} />
+      <Route path="/przejazd/:id" element={<RideDetails />}/>
+      <Route path="/myrides" element={<MyRides />}/>
+
       
       
       </Route>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 export default function Login() {
         const navigate = useNavigate();
@@ -69,6 +70,9 @@ export default function Login() {
             <button type="submit" disabled={isLoading} onClick={handleSubmit}>
                 Login
                 </button>
+            <p>
+                Nie masz konta? <Link to="/register" className="text-blue-500 hover:underline">Zarejestruj się</Link>
+            </p>
 
 
         </div>

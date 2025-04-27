@@ -1,6 +1,7 @@
 import React, {use, useState} from 'react';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 export default function Home() {
 
@@ -81,6 +82,9 @@ export default function Home() {
             <button type="submit" disabled={isLoading} onClick={handleSubmit}>
                 Register
             </button>
+            <p>
+                Masz już konto? <Link to="/login" className="text-blue-500 hover:underline">Zaloguj się</Link>
+            </p>
 
 
         </div>

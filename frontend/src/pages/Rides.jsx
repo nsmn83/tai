@@ -130,7 +130,7 @@ function Rides() {
 
         setPrzejazd(filterBySearch);
     }
-    
+
     return (
         <div className="rides-container-list">
 
@@ -162,8 +162,8 @@ function Rides() {
                 {przejazd.map(przejazd => (
                     <li key={przejazd.id} className="ride-item" onClick={() => handleClick(przejazd)}>
                         <p><strong>Trasa: </strong> {przejazd.start} - {przejazd.koniec}
-                        <strong> Data: </strong> {przejazd.data}
-                        <strong> Godzina wyjazdu: </strong> {przejazd.godzina}</p>
+                            <strong> Data: </strong> {przejazd.data}
+                            <strong> Godzina wyjazdu: </strong> {przejazd.godzina}</p>
                     </li>
                 ))}
             </ul>

@@ -3,13 +3,20 @@ import { useState, useEffect } from 'react'
 import axios from "axios"
 import { useNavigate } from 'react-router-dom';
 
-function Rides() {
+function MyRides() {
 
     const navigate = useNavigate();
 
     const handleClick = (przejazd) => {
         navigate(`/przejazd/${przejazd.id}`, { state: { przejazd } });
     }
+
+    useEffect(() => {
+        const token = localStorage.getItem("accessToken");
+        if (!token) {
+            navigate("/login");
+        }
+    }, [navigate]);
 
     const przejazdy = [
         {
@@ -114,6 +121,9 @@ function Rides() {
     const [searchVal, setSearchVal] = useState("");
     const [searchVal2, setSearchVal2] = useState("");
     const [searchDate, setSearchDate] = useState("");
+    const [searchTime, setSearchTime] = useState("");
+    const [searchPas, setSearchPas] = useState("");
+    const [searchDesc, setDesc] = useState("");
     function handleSearchClick() {
         if (searchVal === "" && searchVal2 === "" && searchDate === "") {
             setPrzejazd(przejazdy);
@@ -130,11 +140,11 @@ function Rides() {
 
         setPrzejazd(filterBySearch);
     }
-    
+
     return (
         <div className="rides-container-list">
 
-            <h2 className='title'> PRZEJAZDY </h2>
+            <h2 className='title'> MOJE PRZEJAZDY </h2>
             <div>
                 <div className="searchbar">
                     <input
@@ -155,15 +165,34 @@ function Rides() {
                         value={searchDate}
                         onChange={e => setSearchDate(e.target.value)}
                     />
-                    <button className="search-button" onClick={handleSearchClick}>Filtruj</button>
+                    <input
+                        className="search-input"
+                        type="time"
+                        value={searchTime}
+                        onChange={e => setSearchTime(e.target.value)}
+                    />
+                    <input
+                        className="search-input"
+                        placeholder="Liczba pasażerów"
+                        type="number"
+                        value={searchPas}
+                        onChange={e => setSearchPas(e.target.value)}
+                    />
+                    <textarea
+                        className="description-input"
+                        placeholder="Opis przejazdu (max 200 znaków)"
+                        value={searchDesc}
+                        onChange={e => setDesc(e.target.value)}
+                    />
+                    <button className="search-button">Dodaj przejazd</button>
                 </div>
             </div>
             <ul>
                 {przejazd.map(przejazd => (
                     <li key={przejazd.id} className="ride-item" onClick={() => handleClick(przejazd)}>
                         <p><strong>Trasa: </strong> {przejazd.start} - {przejazd.koniec}
-                        <strong> Data: </strong> {przejazd.data}
-                        <strong> Godzina wyjazdu: </strong> {przejazd.godzina}</p>
+                            <strong> Data: </strong> {przejazd.data}
+                            <strong> Godzina wyjazdu: </strong> {przejazd.godzina}</p>
                     </li>
                 ))}
             </ul>
@@ -172,4 +201,4 @@ function Rides() {
 
 }
 
-export default Rides;
+export default MyRides;
