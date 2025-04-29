@@ -61,10 +61,12 @@ export default function Login() {
             {error && <p style={{color:"red"}}>{error}</p>}
             {successMessage && <p style={{color:"green"}}>{successMessage}</p>}
             <h2>Login</h2>
-            <label>email</label><br/>
-            <input type="email" name="email" value={formData.email} onChange={handleChange}></input> <br/>
-            <label>password</label><br/>
-            <input type="password" name="password" value={formData.password} onChange={handleChange}></input> <br/>
+            <input 
+              placeholder='Wprowadź e-mail'
+            type="email" name="email" value={formData.email} onChange={handleChange}></input> <br/>
+            <input 
+            placeholder='Wprowadź hasło'
+            type="password" name="password" value={formData.password} onChange={handleChange}></input> <br/>
             <br/>
             <button type="submit" disabled={isLoading} onClick={handleSubmit}>
                 Login

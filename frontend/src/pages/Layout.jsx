@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import './style.css';
+import './style2.css';
 import axios from "axios";
 
 const handleLogout = async () => {
