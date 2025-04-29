@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import './style2.css';
+import './style.css';
 import axios from "axios";
 
 const handleLogout = async () => {
@@ -39,11 +39,12 @@ export default function Layout() {
         <>
                 <nav>
                     <ul>
-                        <li><Link to="/">Home</Link></li>
-                        <li><Link to="#" onClick={handleLogout}>Logout</Link></li>
-                        <li><Link to="/login">Login</Link></li>
-                        <li><Link to="/register">Register</Link></li>
+                        <li><Link to="/">Strona główna</Link></li>
+                        <li><Link to="#" onClick={handleLogout}>Wyloguj się</Link></li>
+                        <li><Link to="/myrides">Profil kierowcy</Link></li>
+                        <li><Link to="/myrequests">Profil pasażera</Link></li>
                     </ul>
+                    <h2 class="navigation-title">DRIVEBUD</h2>
                 </nav>
             <Outlet />
         </>

@@ -1,73 +1,30 @@
-/* style.css */
-
-/* Tło strony */
+/* Styl narzucony dla całej strony (wszystkiego co znajduje się w body) */
 body {
-    /* Tło jeśli przeglądarka nie oblsuguje gradientu */
-    background-color: #4d47f5;
-    /*background-image: linear-gradient(to bottom right, #4d47f5, #bc5bfc); */
-    /* background-image: linear-gradient(to bottom right, #e3e2c1, #82bbc2); */
-    background-image: linear-gradient(to bottom right,  #0a2859, #56449e);
-    margin: 0;
-    padding: 0;
-    justify-content: center;
     display: flex;
+    justify-content: center;
     align-items: center;
-    width: 100vw;
-    height: 100hv;
+    background-color:  #206a5d;
+    background-image: linear-gradient(to bottom right, #206a5d, #c6aa58b2);
 }
 
-/* Styl formularza do logowania / rejestracji */
-.form-container {
-    background-color: white; /* Kolor tła formularza */
-    padding: 20px;
-    border-radius: 15px; /* Zaokrąglone rogi */
-    width: 300px; /* Szerokość formularza */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Cień wokół formularza */
-    color: black;
-}
-
-/* Styl nazwy aplikacji */
-.title {
-    font-family: 'Poppins', sans-serif;
-    text-align: center;
-    font-size: 50px;
-    color: #333;
-}
-
-/* Styl dla nagłówka formularza */
-h2 {
-    text-align: center;
-    color: #333;
-}
-
-/* Styl dla przycisków */
+/* styl narzucony przyciskom */
 button {
-    width: 100%; /* Szerokość przycisku */
-    padding: 10px;
-    background-color: #333;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    align-self: center;
+    width: 50%;
+    background-color: #e6e6e6;
+    border-radius: 15px;
+    font-weight: bold;
+    color: #333333;
 }
 
-button:disabled {
-    background-color: #ddd; /* Kolor przycisku, gdy jest zablokowany */
-    cursor: not-allowed;
+button:hover {
+    background-color: #ff8e0d;
 }
 
-/* Styl dla linku */
-a {
-    text-decoration: none;
-    color: #4A90E2; /* Kolor niebieski */
-}
 
-.hide-navbar {
-    display: none;
-}
-
+/* styl paska nawigacji */
 nav {
-    background-color: white;
+    background-color: #333333;
     padding: 10px 20px;
     display: flex;
     justify-content: flex-start;
@@ -77,117 +34,200 @@ nav {
     left: 0;
     width: 100%;
     height: 45px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
     z-index: 1000;
 }
 
+/* styl listy w pasku nawigacji */
 nav ul {
     list-style: none;
     display: flex;
     gap: 20px;
-    margin: 0;
     padding: 0;
 }
 
+/* styl linków w pasku nawigacji */
 nav ul li a {
-    text-decoration: none;
-    color: #333;
+    padding: 10px;
+    color: #e6e6e6;
     font-weight: bold;
 }
 
-.ride-item {
-    background-color: white;
+/* styl dla inputów */
+input {
+    padding: 10px;
+    border: 1px solid white;
+    border-radius: 10px;
+}
+
+textarea {
+    width: 50%;
+    min-height: 50px;
+    padding: 10px;
+    border: 1px solid white;
+    border-radius: 10px;
+}
+
+img {
+    border-radius: 50px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    max-width: 80%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 1);
+}
+
+/* styl kontenera do rejestracji / logowania */
+.form-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    flex-direction: column;
+    background-color: #333333; 
+    padding: 20px;
+    border-radius: 15px;
+    min-width: 300px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 1);
+    color: white;
+    gap: 10px;
+}
+
+/* styl kontenera zawierajacego "tresc" danej podstrony */
+.content-container {
+    margin-top: 60px;
+    background-color: #333333;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 1);
+    border-radius: 15px;
+    display: flex;       
+    flex-direction: column; 
+    gap: 10px;   
+}
+
+.detail-container {
+    max-width: 400px;
+    background-color: #333333;
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 1);
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    flex-direction: row;       
+    gap: 20px;   
+}
+
+/* styl pojedynczego elementu listy w body (np. lista przejazdow) */
+.list-element {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #e6e6e6;
     border-radius: 15px; 
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); 
-    padding: 15px; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 1); 
+    padding: 5px; 
     margin-bottom: 15px; 
     margin-left: -40px;
     list-style-type: none;
     cursor: pointer;
+    color: #333333;
+    gap: 5px;
 }
 
-.searchbar {
-    background-color: white;
+.list-element:hover {
+    background-color: #ffa238;
+    gap: 15px;
+}
+
+
+/* styl fragmentu elementu listy (np. data, godzina) */
+.list-element-subelement {
+    padding: 10px;
+    margin: 5px;
+    background-color: #59f1e5;
+    /* #ffd6f3 */ /* #6ade91 */
     border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    padding: 15px;
-    margin-bottom: 15px;
+    border-color: #333333;
+}
+
+/* styl dla okienka do filtracji / wprowadzania nowych przejazdów */
+.searchbox {
+    background-color: #333333;
     display: flex;
-    gap: 10px;
-   flex-wrap: wrap;
+    justify-content: flex-start;
     align-items: center;
-}
-
-.search-input {
-    padding: 10px 15px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    font-size: 14px;
-    flex: 1;
-    margin-left: auto;
-    width: 100px;
-}
-
-.search-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 25px;
-    margin-left: auto;
-    width: 150px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.search-button:hover {
-    background-color: #0056b3;
-}
-
-.rides-container-list {
-    list-style-type: none; 
-    margin-top: 60px;
-    text-align: left;
-    background-color: white; /* Kolor tła formularza */
-    padding: 20px;
-    border-radius: 15px; /* Zaokrąglone rogi */
-    width: 50vw; /* Szerokość formularza */
-    margin-left: auto;
-    margin-right: auto;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Cień wokół formularza */
-    color: black;
-}
-
-.rides-details-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px;
-    list-style-type: none; 
-    margin-top: 60px;
-    text-align: left;
-    background-color: white;
-    padding: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 15px;
     border-radius: 15px;
-    width: 70vw;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    color: black;
+    border: 1px solid white;
+
 }
 
-
-.map-image {
-    border-radius: 50px;
-    width: 50%; /* Szerokość formularza */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Cień wokół formularza */
-    color: black;
+.filter-button {
+    width: 200px;
+    margin-left: auto;
+    align-self: flex-end;
+    
 }
 
-.rides-title {
+.detail-page {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 60px;
+    padding: 20px;
+}
+
+.details {
+    margin: 5px;
+    font-weight: bold;
+    color: #333333;
+    display: flex;
+    flex-direction: column;
     text-align: left;
-    margin-left: 20px; /* opcjonalnie: dodaje trochę luzu od lewej */
+    padding: 10px;
+    gap: 5px;
+    border-radius: 15px;
+    border: 1px solid white;
+}
+
+.details-description-element {
+    background-color: #ffffffd7;
+    border-radius: 15px;
+    padding: 10px;
+    margin: 5px;
 }
 
 .request-button {
-    width: 50%;
+    margin: 5px;
+    align-self:flex-start;
+}
+
+.title {
+    align-self: center;
+    color:white;
+}
+
+.navigation-title {
+    margin-left: auto;
+    margin-right: 60px;
+}
+
+.status-accepted {
+    background-color: #59d459e3; 
+}
+
+.status-rejected {
+    background-color: #e05656b7; 
+}
+
+.status-waiting {
+    background-color: #fcef77; 
+}
+
+.titlebox {
+    display: flex;
+    padding: 5px;
+    justify-content: center;
+    border-radius: 15px;
+    border: 1px solid white;
 }

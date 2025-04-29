@@ -132,8 +132,7 @@ function Rides() {
     }
     
     return (
-        <div className="">
-            <div>
+        <div className="content-container">
                 <div className="searchbox">
                     <input
                         placeholder='Miejsce wyjazdu'
@@ -155,7 +154,6 @@ function Rides() {
                     />
                     <button className="filter-button" onClick={handleSearchClick}>Filtruj</button>
                 </div>
-            </div>
             <ul>
                 {przejazd.map(przejazd => (
                     <li key={przejazd.id} className="list-element" onClick={() => handleClick(przejazd)}>

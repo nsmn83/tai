@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react'
 import axios from "axios"
 import { useNavigate } from 'react-router-dom';
 
-function Rides() {
+function MyRides() {
+
 
     const navigate = useNavigate();
 
@@ -111,65 +112,55 @@ function Rides() {
     ];
 
     const [przejazd, setPrzejazd] = useState(przejazdy);
-    const [searchVal, setSearchVal] = useState("");
-    const [searchVal2, setSearchVal2] = useState("");
-    const [searchDate, setSearchDate] = useState("");
-    function handleSearchClick() {
-        if (searchVal === "" && searchVal2 === "" && searchDate === "") {
-            setPrzejazd(przejazdy);
-            return;
-        }
-
-        const filterBySearch = przejazdy.filter((item) => {
-            const matchesStart = item.start.toLowerCase().includes(searchVal.toLowerCase());
-            const matchesEnd = item.koniec.toLowerCase().includes(searchVal2.toLowerCase());
-            const matchesDate = searchDate === "" || item.data === searchDate;
-
-            return matchesStart && matchesEnd && matchesDate;
-        });
-
-        setPrzejazd(filterBySearch);
+    const [start, setStart] = useState("");
+    const [end, setEnd] = useState("");
+    const [date, setDate] = useState("");
+    const [time, setTime] = useState("");
+    function handleAddClick() {
     }
     
     return (
-        <div className="rides-container-list">
-
-            <h2 className='title'> PRZEJAZDY </h2>
-            <div>
-                <div className="searchbar">
+        <div className="content-container">
+                <div className="searchbox">
                     <input
                         placeholder='Miejsce wyjazdu'
-                        className="search-input"
-                        value={searchVal}
-                        onChange={e => setSearchVal(e.target.value)}
+                        value={start}
+                        onChange={e => setStart(e.target.value)}
                     />
                     <input
                         placeholder='Miejsce docelowe'
-                        className="search-input"
-                        value={searchVal2}
-                        onChange={e => setSearchVal2(e.target.value)}
+                        value={end}
+                        onChange={e => setEnd(e.target.value)}
                     />
                     <input
-                        className="search-input"
                         type="date"
-                        value={searchDate}
-                        onChange={e => setSearchDate(e.target.value)}
+                        value={date}
+                        onChange={e => setDate(e.target.value)}
                     />
-                    <button className="search-button" onClick={handleSearchClick}>Filtruj</button>
+                    <input
+                        type="time"
+                        value={time}
+                        onChange={e => setTime(e.target.value)}
+                    />
+                    <textarea
+                        placeholder='Dodaj opis przejazdu'
+                    />
+                    <button className="filter-button" onClick={handleAddClick}>Dodaj przejazd</button>
                 </div>
-            </div>
+
             <ul>
                 {przejazd.map(przejazd => (
-                    <li key={przejazd.id} className="ride-item" onClick={() => handleClick(przejazd)}>
-                        <p><strong>Trasa: </strong> {przejazd.start} - {przejazd.koniec}
-                        <strong> Data: </strong> {przejazd.data}
-                        <strong> Godzina wyjazdu: </strong> {przejazd.godzina}</p>
+                    <li key={przejazd.id} className="list-element" onClick={() => handleClick(przejazd)}>
+                        <p><strong className='list-element-subelement'>Trasa: {przejazd.start} - {przejazd.koniec}</strong></p>
+                        <p><strong className='list-element-subelement'> Data: {przejazd.data}</strong></p>
+                        <p><strong className='list-element-subelement'> Godzina wyjazdu: {przejazd.godzina}</strong></p>
                     </li>
                 ))}
             </ul>
         </div>
     );
 
+
 }
 
-export default Rides;
+export default MyRides;
