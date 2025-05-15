@@ -1,6 +1,7 @@
 from .models import CustomUser
 from rest_framework import serializers
 from django.contrib.auth import  authenticate
+from .models import Profile
 
 class CustomUSerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -40,3 +41,7 @@ class UserLoginSerializer(serializers.Serializer):
             return  user
         raise serializers.ValidationError("Złe wartości!")
 
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = '__all__'
