@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import RideDetails from './pages/RideDetails';
 import MyRides from "./pages/MyRides.jsx";
+import MyRequests from "./pages/MyRequests.jsx";
 
 function App() {
 
@@ -16,8 +17,9 @@ function App() {
       <Route index element={<Home/>}/>
       <Route path="login" element={<Login/>}/>
       <Route path="register" element={<Register/>}/>
-      <Route path="/przejazd/:id" element={<RideDetails />}/>
-      <Route path="/myrides" element={<MyRides />}/>
+      <Route path="przejazd/:id" element={<RideDetails />} />
+      <Route path="myrides" element={<MyRides/>}/> 
+      <Route path="myrequests" element={<MyRequests/>}/> 
 
       
       

@@ -1,175 +1,139 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
-import axios from "axios"
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function Rides() {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
+  const [rides, setRides] = useState([]);
+  const [filteredRides, setFilteredRides] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    const handleClick = (przejazd) => {
-        navigate(`/przejazd/${przejazd.id}`, { state: { przejazd } });
-    }
+  const [searchVal, setSearchVal] = useState('');
+  const [searchVal2, setSearchVal2] = useState('');
+  const [searchDate, setSearchDate] = useState('');
 
-    const przejazdy = [
-        {
-            id: 1,
-            start: "Warszawa",
-            koniec: "Kraków",
-            kierowca: "Jan Kowalski",
-            data: "2025-04-22",
-            godzina: "08:30"
-        },
-        {
-            id: 2,
-            start: "Gdańsk",
-            koniec: "Poznań",
-            kierowca: "Anna Nowak",
-            data: "2025-04-23",
-            godzina: "14:15"
-        },
-        {
-            id: 3,
-            start: "Wrocław",
-            koniec: "Łódź",
-            kierowca: "Piotr Zieliński",
-            data: "2025-04-24",
-            godzina: "10:00"
-        },
-        {
-            id: 4,
-            start: "Warszawa",
-            koniec: "Wrocław",
-            kierowca: "Jan Kowalski",
-            data: "2025-04-22",
-            godzina: "08:30"
-        },
-        {
-            id: 5,
-            start: "Gdańsk",
-            koniec: "Warszawa",
-            kierowca: "Anna Nowak",
-            data: "2025-04-23",
-            godzina: "14:15"
-        },
-        {
-            id: 6,
-            start: "Wrocław",
-            koniec: "Warszawa",
-            kierowca: "Piotr Zieliński",
-            data: "2025-04-24",
-            godzina: "10:00"
-        },
-        {
-            id: 7,
-            start: "Warszawa",
-            koniec: "Gdynia",
-            kierowca: "Jan Kowalski",
-            data: "2025-04-22",
-            godzina: "08:30"
-        },
-        {
-            id: 8,
-            start: "Gdańsk",
-            koniec: "Wrocław",
-            kierowca: "Anna Nowak",
-            data: "2025-04-23",
-            godzina: "14:15"
-        },
-        {
-            id: 9,
-            start: "Wrocław",
-            koniec: "Łódź",
-            kierowca: "Piotr Zieliński",
-            data: "2025-04-24",
-            godzina: "10:00"
-        },
-        {
-            id: 10,
-            start: "Warszawa",
-            koniec: "Pisczyn",
-            kierowca: "Jan Kowalski",
-            data: "2025-04-22",
-            godzina: "08:30"
-        },
-        {
-            id: 11,
-            start: "Gdańsk",
-            koniec: "Poznań",
-            kierowca: "Anna Nowak",
-            data: "2025-04-23",
-            godzina: "14:15"
-        },
-        {
-            id: 12,
-            start: "Wrocław",
-            koniec: "Markuszów",
-            kierowca: "Piotr Zieliński",
-            data: "2025-04-24",
-            godzina: "10:00"
+  // Axios interceptor for 401 (token expiration)
+  useEffect(() => {
+    const interceptor = axios.interceptors.response.use(
+      response => response,
+      error => {
+        if (error.response && error.response.status === 401) {
+          alert('Twoja sesja wygasła. Zaloguj się ponownie.');
+          localStorage.removeItem('accessToken');
+          navigate('/login');
         }
-    ];
-
-    const [przejazd, setPrzejazd] = useState(przejazdy);
-    const [searchVal, setSearchVal] = useState("");
-    const [searchVal2, setSearchVal2] = useState("");
-    const [searchDate, setSearchDate] = useState("");
-    function handleSearchClick() {
-        if (searchVal === "" && searchVal2 === "" && searchDate === "") {
-            setPrzejazd(przejazdy);
-            return;
-        }
-
-        const filterBySearch = przejazdy.filter((item) => {
-            const matchesStart = item.start.toLowerCase().includes(searchVal.toLowerCase());
-            const matchesEnd = item.koniec.toLowerCase().includes(searchVal2.toLowerCase());
-            const matchesDate = searchDate === "" || item.data === searchDate;
-
-            return matchesStart && matchesEnd && matchesDate;
-        });
-
-        setPrzejazd(filterBySearch);
-    }
-
-    return (
-        <div className="rides-container-list">
-
-            <h2 className='title'> PRZEJAZDY </h2>
-            <div>
-                <div className="searchbar">
-                    <input
-                        placeholder='Miejsce wyjazdu'
-                        className="search-input"
-                        value={searchVal}
-                        onChange={e => setSearchVal(e.target.value)}
-                    />
-                    <input
-                        placeholder='Miejsce docelowe'
-                        className="search-input"
-                        value={searchVal2}
-                        onChange={e => setSearchVal2(e.target.value)}
-                    />
-                    <input
-                        className="search-input"
-                        type="date"
-                        value={searchDate}
-                        onChange={e => setSearchDate(e.target.value)}
-                    />
-                    <button className="search-button" onClick={handleSearchClick}>Filtruj</button>
-                </div>
-            </div>
-            <ul>
-                {przejazd.map(przejazd => (
-                    <li key={przejazd.id} className="ride-item" onClick={() => handleClick(przejazd)}>
-                        <p><strong>Trasa: </strong> {przejazd.start} - {przejazd.koniec}
-                            <strong> Data: </strong> {przejazd.data}
-                            <strong> Godzina wyjazdu: </strong> {przejazd.godzina}</p>
-                    </li>
-                ))}
-            </ul>
-        </div>
+        return Promise.reject(error);
+      }
     );
 
+    return () => axios.interceptors.response.eject(interceptor);
+  }, [navigate]);
+
+  // Fetch all rides
+const fetchRides = () => {
+  const token = localStorage.getItem('accessToken');
+  setLoading(true);
+  setError(null);
+
+  axios
+    .get('http://127.0.0.1:8000/api/rides/all/', {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then(res => {
+      setRides(res.data);
+      setFilteredRides(res.data);
+      setLoading(false);
+    })
+    .catch(err => {
+      console.error(err);
+      setError('Nie udało się załadować przejazdów.');
+      setLoading(false);
+    });
+};
+
+
+  useEffect(() => {
+    fetchRides();
+  }, [navigate]);
+
+  const handleClick = (ride) => {
+    navigate(`/przejazd/${ride.id}`, { state: { przejazd: ride } });
+  };
+
+  // Filter rides based on search inputs
+  const handleSearchClick = () => {
+    if (searchVal === '' && searchVal2 === '' && searchDate === '') {
+      setFilteredRides(rides);
+      return;
+    }
+
+    const filtered = rides.filter((ride) => {
+      const matchesStart = ride.start_address?.toLowerCase().includes(searchVal.toLowerCase());
+      const matchesEnd = ride.end_address?.toLowerCase().includes(searchVal2.toLowerCase());
+      const matchesDate = searchDate === '' || ride.start_time?.slice(0, 10) === searchDate;
+
+      return matchesStart && matchesEnd && matchesDate;
+    });
+
+    setFilteredRides(filtered);
+  };
+
+  return (
+    <div className="content-container">
+      <div className="searchbox">
+        <input
+          placeholder="Miejsce wyjazdu"
+          value={searchVal}
+          onChange={(e) => setSearchVal(e.target.value)}
+          className="search-input"
+        />
+        <input
+          placeholder="Miejsce docelowe"
+          value={searchVal2}
+          onChange={(e) => setSearchVal2(e.target.value)}
+          className="search-input"
+        />
+        <input
+          type="date"
+          value={searchDate}
+          onChange={(e) => setSearchDate(e.target.value)}
+          className="search-input"
+        />
+        <button className="filter-button" onClick={handleSearchClick}>Filtruj</button>
+      </div>
+
+      {loading && <p>Ładowanie...</p>}
+      {error && <p className="error">{error}</p>}
+
+      <ul>
+        {filteredRides.map((ride) => (
+          <li
+            key={ride.id}
+            className="list-element"
+            onClick={() => handleClick(ride)}
+          >
+            <p>
+              <strong className="list-element-subelement">
+                Trasa: {ride.start_address} - {ride.end_address}
+              </strong>
+            </p>
+            <p>
+              <strong className="list-element-subelement">
+                Data: {ride.start_time?.slice(0, 10)}
+              </strong>
+            </p>
+            <p>
+              <strong className="list-element-subelement">
+                Godzina wyjazdu: {ride.start_time?.slice(11, 16)}
+              </strong>
+            </p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
 export default Rides;
