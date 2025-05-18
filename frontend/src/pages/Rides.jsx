@@ -28,23 +28,6 @@ function Rides() {
   deleted: 'Deleted',
 };
 
-  // Axios interceptor for 401 (token expiration)
-  useEffect(() => {
-    const interceptor = axios.interceptors.response.use(
-      response => response,
-      error => {
-        if (error.response && error.response.status === 401) {
-          alert('Twoja sesja wygasła. Zaloguj się ponownie.');
-          localStorage.removeItem('accessToken');
-          navigate('/login');
-        }
-        return Promise.reject(error);
-      }
-    );
-
-    return () => axios.interceptors.response.eject(interceptor);
-  }, [navigate]);
-
   // Fetch all rides
 const fetchRides = () => {
   const token = localStorage.getItem('accessToken');

@@ -5,11 +5,19 @@ import Rides from './Rides';
 
 
 export default function Home() {
+
+    const accessToken = localStorage.getItem("accessToken");
+
+
     return (
         <div>
-
-            <Rides />
-
+            {!accessToken ? (
+                <div>
+                <h1 className='title'>DRIVEBUD</h1>
+                </div>
+            ) : (
+                 <Rides />
+            )}
         </div>
     )
 }

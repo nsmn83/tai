@@ -98,14 +98,14 @@ textarea {
 }
 
 .detail-container {
+    width: 700px;
+    margin-top: 75px;
     background-color: #333333;
-    padding: 10px;
+    padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 1);
     border-radius: 15px;
+    flex-direction: column;
     display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-    flex-direction: columns;       
     gap: 20px;   
 }
 
@@ -235,6 +235,9 @@ textarea {
 }
 
 .title {
+    display: flex;
+    font-size: 300px;
+    opacity: 70%;
     align-self: center;
     color:white;
 }
@@ -294,8 +297,6 @@ textarea {
     border-radius: 15px;
     border: 1px solid white;
 }
-
-
 
 .leaflet-routing-container {
     display: none;

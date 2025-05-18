@@ -29,7 +29,7 @@ function MyRides() {
       response => response,
       error => {
         if (error.response && error.response.status === 401) {
-          alert('Twoja sesja wygasła. Zaloguj się ponownie.');
+          alert('Musisz sie zalogować by korzystać ze strony.');
           localStorage.removeItem('accessToken');
           navigate('/login');
         }

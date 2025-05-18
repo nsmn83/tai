@@ -12,6 +12,7 @@ export default function RideDetails() {
   const [error, setError] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
 
+
    const statusLabels = {
   planned: 'Planned',
   in_progress: 'In Progress',
@@ -171,7 +172,7 @@ const handleProgress = async (rideId) => {
         Authorization: `Bearer ${token}`
       }
     });
-    alert('Przejazd został rozpoczęty');
+    alert('Zmiana statusu przejazdu powiodła się.');
     window.location.reload();
   }
   catch (err) {
@@ -233,7 +234,7 @@ const handleProgress = async (rideId) => {
 
     {currentUser && currentUser.id == ride.driver.id &&(
 
-        <button className='decision-button' onClick={() => handleProgress(ride.id)}>Usuń przejazd</button>
+        <button className='decision-button' onClick={() => handleDelete(ride.id)}>Usuń przejazd</button>
     )}
      </div>
     {currentUser &&
@@ -243,15 +244,21 @@ const handleProgress = async (rideId) => {
           <button className="request-button" onClick={handleClick}>Dołącz do przejazdu!</button>
         </div>
 )}
-    {currentUser &&
-        currentUser.id !== ride.driver.id &&
-        ride.requests.some((req) => req.user.id === currentUser.id) && (
-        <div>
-          <button className="request-button" onClick={()=>handleWithdraw(ride.requests.find(
-  (req) => req.user.id === currentUser.id).id, ride.requests.find(
-  (req) => req.user.id === currentUser.id).user.id)}>Wycofaj prośbę o dołączenie</button>
-        </div>
-)}
+{currentUser &&
+  currentUser.id !== ride.driver.id && (() => {
+    const userRequest = ride.requests.find(req => req.user.id === currentUser.id);
+    return userRequest && (userRequest.status === 'waiting' || userRequest.status === 'accepted') ? (
+      <div>
+        <button
+          className="request-button"
+          onClick={() => handleWithdraw(userRequest.id, userRequest.user.id)}
+        >
+          Wycofaj prośbę o dołączenie
+        </button>
+      </div>
+    ) : null;
+  })()}
+
         </div>
       </div>
       <div>

@@ -79,7 +79,7 @@ def MyRidesAPIView(request):
     rides_as_passenger = Ride.objects.filter(requests__user=user)
 
     #all rides needed
-    all_rides = (rides_as_passenger | rides_as_driver).distinct().order_by('start_time')
+    all_rides = (rides_as_passenger | rides_as_driver).exclude(status='deleted').distinct().order_by('start_time')
 
     serializer = RideSerializer(all_rides, many=True)
     return Response(serializer.data)
