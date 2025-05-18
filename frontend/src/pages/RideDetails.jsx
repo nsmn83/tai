@@ -121,8 +121,8 @@ const handleReject = async (requestId) => {
 }
 
   return (
-    <div className="detail-page">
-      <div className="detail-container">
+    <div className="detail-container">
+      <div>
         <div className="details">
           <h2 className="title">Szczegóły przejazdu</h2>
           <p className="details-description-element">{ride.description || 'Brak opisu'}</p>
