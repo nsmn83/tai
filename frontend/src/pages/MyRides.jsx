@@ -16,6 +16,13 @@ function MyRides() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const statusLabels = {
+  planned: 'Planned',
+  in_progress: 'In Progress',
+  done: 'Done',
+  deleted: 'Deleted',
+};
+
   // Add axios interceptor to handle 401 globally
   useEffect(() => {
     const interceptor = axios.interceptors.response.use(
@@ -186,6 +193,7 @@ function MyRides() {
               <strong className='list-element-subelement'>Trasa: {ride.start_address} - {ride.end_address}</strong>
               <strong className='list-element-subelement'> Data: {ride.start_time.slice(0, 10)}</strong>
               <strong className='list-element-subelement'> Godzina wyjazdu: {ride.start_time.slice(11, 16)}</strong>
+               <strong className='list-element-subelement'> Status: {statusLabels[ride.status]}</strong>
             </p>
           </li>
         ))}

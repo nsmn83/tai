@@ -88,7 +88,7 @@ def MyRidesAPIView(request):
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
 def AllRidesAPIView(request):
-    all_rides = Ride.objects.all().order_by('start_time')
+    all_rides = Ride.objects.exclude(status__in=['done', 'deleted']).order_by('start_time')
     serializer = RideSerializer(all_rides, many=True)
     return Response(serializer.data)
 
@@ -140,3 +140,63 @@ class RejectPassengerRequestAPIView(APIView):
         pr.status = 'rejected'
         pr.save()
         return Response({'status': 'rejected'})
+
+class WithdrawPassengerRequestAPIView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        try:
+            pr = PassengerRequest.objects.get(pk=pk)
+            user_id = request.query_params.get('user_id')
+        except PassengerRequest.DoesNotExist:
+            return Response({'detail': 'Nie znaleziono żądania.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if str(user_id) != str(request.user.id):
+
+            return Response({'detail': 'Brak uprawnień.'}, status=status.HTTP_403_FORBIDDEN)
+
+        pr.status = 'rejected'
+        pr.save()
+        return Response({'status': 'rejected'})
+
+class DeleteRideAPIView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        try:
+            rd = Ride.objects.get(pk=pk)
+            #pr = PassengerRequest.objects.get(ride = pk)
+        except Ride.DoesNotExist:
+            return Response({'detail': 'Nie znaleziono żądania.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if rd.driver != request.user:
+            return Response({'detail': 'Brak uprawnień.'}, status=status.HTTP_403_FORBIDDEN)
+
+        PassengerRequest.objects.filter(ride=rd).update(status='rejected')
+        rd.status = 'deleted'
+        rd.save()
+        return Response({'status': 'deleted'})
+
+class ProgressRideAPIView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        try:
+            rd = Ride.objects.get(pk=pk)
+               # pr = PassengerRequest.objects.get(ride = pk)
+        except Ride.DoesNotExist:
+            return Response({'detail': 'Nie znaleziono żądania.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if rd.driver != request.user:
+            return Response({'detail': 'Brak uprawnień.'}, status=status.HTTP_403_FORBIDDEN)
+
+        PassengerRequest.objects.filter(ride=rd).update(status='rejected')
+        if rd.status == 'planned':
+            rd.status = 'in_progress'
+            rd.save()
+            return Response({'status': 'in_progress'})
+        elif rd.status == 'in_progress':
+            rd.status = 'done'
+            rd.save()
+            return Response({'status': 'done'})
+        return Response({'status': 'done'})

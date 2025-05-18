@@ -19,6 +19,7 @@ class RideSerializer(serializers.ModelSerializer):
     driver = serializers.SerializerMethodField()
     requests = PassengerRequestSerializer(many=True, read_only=True)
 
+
     class Meta:
         model = Ride
         fields = '__all__'
