@@ -12,6 +12,13 @@ export default function RideDetails() {
   const [error, setError] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
 
+   const statusLabels = {
+  planned: 'Planned',
+  in_progress: 'In Progress',
+  done: 'Done',
+  deleted: 'Deleted',
+};
+
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
     if (!token) {
@@ -85,6 +92,8 @@ const handleClick = async () => {
 };
 
 
+
+
 const handleAccept = async (requestId) => {
   const token = localStorage.getItem('accessToken');
   try {
@@ -120,6 +129,58 @@ const handleReject = async (requestId) => {
   }
 }
 
+const handleWithdraw = async (requestId,userId) => {
+  const token = localStorage.getItem('accessToken');
+  try {
+    await axios.post(`http://127.0.0.1:8000/api/rides/withdraw/${requestId}/?user_id=${userId}`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    alert('Prośba została wycofana.');
+    window.location.reload();
+  }
+  catch (err) {
+    console.error(err);
+    alert('Nie udało się wycofać prośby.');
+  }
+}
+
+const handleDelete = async (rideId) => {
+  const token = localStorage.getItem('accessToken');
+  try {
+    await axios.post(`http://127.0.0.1:8000/api/rides/delete/${rideId}/`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    alert('Przejazd został usunięty');
+    window.location.reload();
+  }
+  catch (err) {
+    console.error(err);
+    alert('Nie udało się usunąć przejazdu.');
+  }
+}
+
+const handleProgress = async (rideId) => {
+  const token = localStorage.getItem('accessToken');
+  try {
+    await axios.post(`http://127.0.0.1:8000/api/rides/progress/${rideId}/`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    alert('Przejazd został rozpoczęty');
+    window.location.reload();
+  }
+  catch (err) {
+    console.error(err);
+    alert('Nie udało się rozpocząć przejazdu.');
+  }
+}
+
+
   return (
     <div className="detail-container">
       <div>
@@ -128,6 +189,7 @@ const handleReject = async (requestId) => {
           <p className="details-description-element">{ride.description || 'Brak opisu'}</p>
           <p className="details-description-element">Trasa przejazdu: {ride.start_address} - {ride.end_address}</p>
           <p className="details-description-element">Kierowca: {ride.driver?.username || 'Nieznany'}</p>
+          <p className="details-description-element">Status: {statusLabels[ride.status]}</p>
           <p className="details-description-element">Data: {ride.start_time?.slice(0, 10)}</p>
           <p className="details-description-element">Godz: {ride.start_time?.slice(11, 16)}</p>
           <p className="details-description-element">Liczba pasażerów: {acceptedCount} / {maxPassengers}</p>
@@ -139,6 +201,7 @@ const handleReject = async (requestId) => {
       ? ride.requests
       : ride.requests.filter(req => req.status === 'accepted')
     ).map((req) => (
+
               <li className='passenger-list-element' key={req.id}>
               <div>
                 <p> {req.user.username} – {req.status} </p>
@@ -155,12 +218,38 @@ const handleReject = async (requestId) => {
   ) : (
     <p>Brak pasażerów</p>
   )}
+
 </div>
+    <div>
+        {currentUser && currentUser.id == ride.driver.id && ride.status == 'planned' && (
+
+        <button className='decision-button' onClick={() => handleProgress(ride.id)}>Rozpocznij przejazd</button>
+    )}
+
+    {currentUser && currentUser.id == ride.driver.id && ride.status == 'in_progress' && (
+
+        <button className='decision-button' onClick={() => handleProgress(ride.id)}>Zakończ przejazd</button>
+    )}
+
+    {currentUser && currentUser.id == ride.driver.id &&(
+
+        <button className='decision-button' onClick={() => handleProgress(ride.id)}>Usuń przejazd</button>
+    )}
+     </div>
     {currentUser &&
         currentUser.id !== ride.driver.id &&
         !ride.requests.some((req) => req.user.id === currentUser.id) && (
         <div>
           <button className="request-button" onClick={handleClick}>Dołącz do przejazdu!</button>
+        </div>
+)}
+    {currentUser &&
+        currentUser.id !== ride.driver.id &&
+        ride.requests.some((req) => req.user.id === currentUser.id) && (
+        <div>
+          <button className="request-button" onClick={()=>handleWithdraw(ride.requests.find(
+  (req) => req.user.id === currentUser.id).id, ride.requests.find(
+  (req) => req.user.id === currentUser.id).user.id)}>Wycofaj prośbę o dołączenie</button>
         </div>
 )}
         </div>

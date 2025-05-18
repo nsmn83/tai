@@ -44,7 +44,7 @@ export default function MyRequests() {
     return (
         <div className="content-container">
             <div className="titlebox">
-                <h2>STATUS WYSŁANYCH PRÓŚB</h2>
+                <h2 style={{ color: 'green' }}>STATUS WYSŁANYCH PRÓŚB</h2>
             </div>
             <ul>
                 {rides.map(ride => (

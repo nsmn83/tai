@@ -6,7 +6,8 @@ class Ride(models.Model):
     STATUS_CHOICES = [
         ('planned', 'Planned'),
         ('in_progress', 'In Progress'),
-        ('done', 'Done')
+        ('done', 'Done'),
+        ('deleted', 'Deleted')
     ]
 
     start_address = models.CharField(max_length=64)

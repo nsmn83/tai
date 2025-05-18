@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import L from 'leaflet';
+
+import { OpenStreetMapProvider } from 'leaflet-geosearch';
+// setup
+const provider = new OpenStreetMapProvider();
+// search
+
 
 function Rides() {
   const navigate = useNavigate();
@@ -13,6 +20,13 @@ function Rides() {
   const [searchVal, setSearchVal] = useState('');
   const [searchVal2, setSearchVal2] = useState('');
   const [searchDate, setSearchDate] = useState('');
+
+   const statusLabels = {
+  planned: 'Planned',
+  in_progress: 'In Progress',
+  done: 'Done',
+  deleted: 'Deleted',
+};
 
   // Axios interceptor for 401 (token expiration)
   useEffect(() => {
@@ -63,22 +77,36 @@ const fetchRides = () => {
   };
 
   // Filter rides based on search inputs
-  const handleSearchClick = () => {
+
+  const handleSearchClick = ( /*async*/ () => {
+
     if (searchVal === '' && searchVal2 === '' && searchDate === '') {
+
       setFilteredRides(rides);
+
       return;
     }
 
-    const filtered = rides.filter((ride) => {
+     /*let  StartResult = ( await provider.search({ query: searchVal }));
+     let  EndResult = ( await provider.search({ query: searchVal2 }));
+
+     window.alert(StartResult.y + "   " + StartResult.x);*/
+    const filtered =  rides.filter( (ride)  => {
+        const limit = 0.2;
+
+        /*window.alert(ride.start_lat + "   " +StartResult.y);
+        const matchesStartCord = Math.sqrt((ride.start_lat - StartResult.y)**2 + (ride.start_lat - StartResult.x)**2) <limit;
+        const matchesEndCord = Math.sqrt((ride.end_lat - EndResult.y)**2 + (ride.end_lat - EndResult.x)**2) <limit;
+        */
       const matchesStart = ride.start_address?.toLowerCase().includes(searchVal.toLowerCase());
       const matchesEnd = ride.end_address?.toLowerCase().includes(searchVal2.toLowerCase());
       const matchesDate = searchDate === '' || ride.start_time?.slice(0, 10) === searchDate;
 
-      return matchesStart && matchesEnd && matchesDate;
+      return matchesStart && matchesEnd && matchesDate /*&& matchesStartCord && matchesEndCord*/;
     });
 
     setFilteredRides(filtered);
-  };
+  });
 
   return (
     <div className="content-container">
@@ -127,6 +155,11 @@ const fetchRides = () => {
             <p>
               <strong className="list-element-subelement">
                 Godzina wyjazdu: {ride.start_time?.slice(11, 16)}
+              </strong>
+            </p>
+            <p>
+              <strong className="list-element-subelement">
+                Status: {statusLabels[ride.status]}
               </strong>
             </p>
           </li>
