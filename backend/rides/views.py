@@ -76,7 +76,7 @@ def MyRidesAPIView(request):
     rides_as_driver = Ride.objects.filter(driver=user)
 
     #rides where user sent requests
-    rides_as_passenger = Ride.objects.filter(requests__user=user).exclude(requests__status='rejected')
+    rides_as_passenger = Ride.objects.filter(requests__user=user, requests__status='accepted')
 
     #all rides needed
     all_rides = (rides_as_passenger | rides_as_driver).exclude(status='deleted').distinct().order_by('start_time')
@@ -96,16 +96,30 @@ def AllRidesAPIView(request):
 @permission_classes([permissions.IsAuthenticated])
 def RidesUserRequestedAPIView(request):
     user = request.user
-    # Get all passenger requests made by the user, including related ride
+    # Pobierz wszystkie prośby użytkownika z powiązanymi przejazdami
     requests = PassengerRequest.objects.filter(user=user).select_related('ride')
 
     data = []
     for req in requests:
         ride_data = RideSerializer(req.ride).data
-        ride_data['request_status'] = req.status  # inject the status
+        ride_data['request_status'] = req.status  # dodaj status do danych
         data.append(ride_data)
 
+    # Definicja priorytetu statusów
+    status_priority = {
+        'accepted': 1,
+        'waiting': 2,
+        'rejected': 3
+    }
+
+    # Sortowanie według statusu i daty (od najwcześniejszej)
+    data.sort(key=lambda x: (
+        status_priority.get(x['request_status'], 3),
+        x.get('start_time', None)
+    ))
+
     return Response(data)
+
 
 
 class AcceptPassengerRequestAPIView(APIView):
