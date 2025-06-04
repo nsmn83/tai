@@ -76,7 +76,7 @@ def MyRidesAPIView(request):
     rides_as_driver = Ride.objects.filter(driver=user)
 
     #rides where user sent requests
-    rides_as_passenger = Ride.objects.filter(requests__user=user)
+    rides_as_passenger = Ride.objects.filter(requests__user=user).exclude(requests__status='rejected')
 
     #all rides needed
     all_rides = (rides_as_passenger | rides_as_driver).exclude(status='deleted').distinct().order_by('start_time')

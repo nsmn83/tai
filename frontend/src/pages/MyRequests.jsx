@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
 
 export default function MyRequests() {
     const navigate = useNavigate();
@@ -22,11 +22,7 @@ export default function MyRequests() {
             return;
         }
 
-        axios.get('http://127.0.0.1:8000/api/rides/requested/', {
-            headers: {
-                Authorization: `Bearer ${accessToken}`
-            }
-        })
+        axiosInstance.get('rides/requested/')
         .then(response => {
             setRides(response.data);
             setLoading(false);
@@ -44,7 +40,7 @@ export default function MyRequests() {
     return (
         <div className="content-container">
             <div className="titlebox">
-                <h2 style={{ color: 'green' }}>STATUS WYSŁANYCH PRÓŚB</h2>
+                <h2>STATUS WYSŁANYCH PRÓŚB</h2>
             </div>
             <ul>
                 {rides.map(ride => (

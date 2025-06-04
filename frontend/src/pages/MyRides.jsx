@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../utils/axiosInstance';
 
 function MyRides() {
   const navigate = useNavigate();
@@ -11,37 +12,12 @@ function MyRides() {
   const [searchVal2, setSearchVal2] = useState('');
   const [searchDate, setSearchDate] = useState('');
   const [searchTime, setSearchTime] = useState('');
+  const [searchEndTime, setSearchEndTime] = useState(''); // New state for end_time
   const [searchPas, setSearchPas] = useState('');
+  const [searchMaxPas, setSearchMaxPas] = useState(''); // New state for max_passengers
   const [searchDesc, setDesc] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const statusLabels = {
-  planned: 'Planned',
-  in_progress: 'In Progress',
-  done: 'Done',
-  deleted: 'Deleted',
-};
-
-  // Add axios interceptor to handle 401 globally
-  useEffect(() => {
-    const interceptor = axios.interceptors.response.use(
-      response => response,
-      error => {
-        if (error.response && error.response.status === 401) {
-          alert('Musisz sie zalogować by korzystać ze strony.');
-          localStorage.removeItem('accessToken');
-          navigate('/login');
-        }
-        return Promise.reject(error);
-      }
-    );
-
-    // Cleanup interceptor when component unmounts
-    return () => {
-      axios.interceptors.response.eject(interceptor);
-    };
-  }, [navigate]);
 
   // Navigate to ride detail
   const handleClick = (ride) => {
@@ -57,10 +33,7 @@ function MyRides() {
     }
 
     setLoading(true);
-    axios
-      .get('http://127.0.0.1:8000/api/rides/my/', {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+    axiosInstance.get('rides/my')
       .then((res) => {
         setAllRides(res.data);
         setPrzejazd(res.data);
@@ -82,58 +55,88 @@ function MyRides() {
     setSearchVal2('');
     setSearchDate('');
     setSearchTime('');
+    setSearchEndTime('');
     setSearchPas('');
+    setSearchMaxPas('');
     setDesc('');
   };
 
   const handleAddRide = () => {
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-      alert('Musisz być zalogowany, aby dodać przejazd.');
-      navigate('/login');
+    // Validate inputs
+    if (!searchVal || !searchVal2 || !searchDate || !searchTime || !searchEndTime || !searchPas || !searchMaxPas) {
+      alert('Wszystkie pola są wymagane!');
       return;
     }
 
-    if (!searchVal || !searchVal2 || !searchDate || !searchTime || !searchPas) {
-      alert('Wypełnij wszystkie wymagane pola.');
+    const passengerCount = parseInt(searchPas, 10);
+    const maxPassengers = parseInt(searchMaxPas, 10);
+    if (isNaN(passengerCount) || passengerCount < 0) {
+      alert('Liczba pasażerów musi być liczbą dodatnią!');
+      return;
+    }
+    if (isNaN(maxPassengers) || maxPassengers <= 0) {
+      alert('Maksymalna liczba pasażerów musi być liczbą dodatnią!');
+      return;
+    }
+    if (passengerCount > maxPassengers) {
+      alert('Liczba pasażerów nie może przekraczać maksymalnej liczby pasażerów!');
+      return;
+    }
+
+    // Ensure start_time and end_time are in ISO 8601 format (YYYY-MM-DDTHH:mm:ss)
+    const startTime = `${searchDate}T${searchTime}:00`;
+    const endTime = `${searchDate}T${searchEndTime}:00`;
+    if (!startTime.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/)) {
+      alert('Nieprawidłowy format daty lub godziny rozpoczęcia!');
+      return;
+    }
+    if (!endTime.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/)) {
+      alert('Nieprawidłowy format daty lub godziny zakończenia!');
       return;
     }
 
     const rideData = {
       start_address: searchVal,
       end_address: searchVal2,
-      start_time: `${searchDate}T${searchTime}`,
-      end_time: `${searchDate}T${searchTime}`,
-      max_passengers: parseInt(searchPas),
-      description: searchDesc,
+      start_time: startTime,
+      end_time: endTime, // Added end_time
+      passenger_count: passengerCount,
+      max_passengers: maxPassengers, // Added max_passengers
+      description: searchDesc || '', // Ensure description is not null
     };
 
-    axios
-      .post('http://127.0.0.1:8000/api/rides/create/', rideData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      })
+    console.log('Sending rideData:', rideData); // Log payload for debugging
+
+    axiosInstance
+      .post('rides/create/', rideData)
       .then(() => {
         alert('Przejazd został dodany!');
         clearForm();
-        fetchRides(); // Refresh list
+        fetchRides();
       })
       .catch((err) => {
-      console.error(err);
-      if (err.response?.data) {
-        if (err.response.data.start_address) {
-          alert('Błąd: ' + err.response.data.start_address);
-        } else if (err.response.data.end_address) {
-          alert('Błąd: ' + err.response.data.end_address);
+        console.error('Błąd podczas dodawania przejazdu:', err.response?.data);
+        if (err.response?.data) {
+          const errors = err.response.data;
+          if (errors.start_address) {
+            alert('Błąd: ' + errors.start_address.join(', '));
+          } else if (errors.end_address) {
+            alert('Błąd: ' + errors.end_address.join(', '));
+          } else if (errors.start_time) {
+            alert('Błąd: ' + errors.start_time.join(', '));
+          } else if (errors.end_time) {
+            alert('Błąd: ' + errors.end_time.join(', '));
+          } else if (errors.passenger_count) {
+            alert('Błąd: ' + errors.passenger_count.join(', '));
+          } else if (errors.max_passengers) {
+            alert('Błąd: ' + errors.max_passengers.join(', '));
+          } else {
+            alert('Błąd podczas dodawania przejazdu: ' + JSON.stringify(errors));
+          }
         } else {
-          alert('Błąd podczas dodawania przejazdu.');
+          alert('Błąd podczas dodawania przejazdu: ' + err.message);
         }
-      } else {
-        alert('Błąd podczas dodawania przejazdu.');
-      }
-    });
+      });
   };
 
   return (
@@ -167,10 +170,24 @@ function MyRides() {
         />
         <input
           className="search-input"
+          type="time"
+          placeholder="Godzina zakończenia"
+          value={searchEndTime}
+          onChange={(e) => setSearchEndTime(e.target.value)}
+        />
+        <input
+          className="search-input"
           placeholder="Liczba pasażerów"
           type="number"
           value={searchPas}
           onChange={(e) => setSearchPas(e.target.value)}
+        />
+        <input
+          className="search-input"
+          placeholder="Maksymalna liczba pasażerów"
+          type="number"
+          value={searchMaxPas}
+          onChange={(e) => setSearchMaxPas(e.target.value)}
         />
         <textarea
           className="description-input"
@@ -193,7 +210,6 @@ function MyRides() {
               <strong className='list-element-subelement'>Trasa: {ride.start_address} - {ride.end_address}</strong>
               <strong className='list-element-subelement'> Data: {ride.start_time.slice(0, 10)}</strong>
               <strong className='list-element-subelement'> Godzina wyjazdu: {ride.start_time.slice(11, 16)}</strong>
-               <strong className='list-element-subelement'> Status: {statusLabels[ride.status]}</strong>
             </p>
           </li>
         ))}

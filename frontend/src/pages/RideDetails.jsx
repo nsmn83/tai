@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import testImage from '../assets/test.jpg';
+import axiosInstance from '../utils/axiosInstance';
 import Map from './Map';
 
 export default function RideDetails() {
@@ -27,9 +26,7 @@ export default function RideDetails() {
       return;
     }
 
-    axios.get('http://127.0.0.1:8000/api/user/', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    axiosInstance.get('user/')
       .then(res => {
         setCurrentUser(res.data);
       })
@@ -44,9 +41,7 @@ export default function RideDetails() {
       return;
     }
 
-    axios.get(`http://127.0.0.1:8000/api/rides/${id}/`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    axiosInstance.get(`rides/${id}/`)
       .then(res => {
         setRide(res.data);
         setLoading(false);
@@ -70,12 +65,8 @@ const handleClick = async () => {
   const token = localStorage.getItem('accessToken');
 
   try {
-    const res = await axios.post('http://127.0.0.1:8000/api/rides/join/', {
+    const res = await axiosInstance.post('rides/join/', {
       ride: ride.id
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
     });
 
     alert('Wysłano prośbę o dołączenie do przejazdu.');
@@ -98,12 +89,7 @@ const handleClick = async () => {
 const handleAccept = async (requestId) => {
   const token = localStorage.getItem('accessToken');
   try {
-      await axios.post(`http://127.0.0.1:8000/api/rides/accept/${requestId}/`, {}, {
-
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+      await axiosInstance.post(`rides/accept/${requestId}/`, {});
     alert('Prośba została zaakceptowana.');
     window.location.reload();
   }
@@ -116,11 +102,7 @@ const handleAccept = async (requestId) => {
 const handleReject = async (requestId) => {
   const token = localStorage.getItem('accessToken');
   try {
-    await axios.post(`http://127.0.0.1:8000/api/rides/reject/${requestId}/`, {}, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+    await axiosInstance.post(`rides/reject/${requestId}/`, {});
     alert('Prośba została odrzucona.');
     window.location.reload(); 
   }
@@ -133,11 +115,7 @@ const handleReject = async (requestId) => {
 const handleWithdraw = async (requestId,userId) => {
   const token = localStorage.getItem('accessToken');
   try {
-    await axios.post(`http://127.0.0.1:8000/api/rides/withdraw/${requestId}/?user_id=${userId}`, {}, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+    await axiosInstance.post(`rides/withdraw/${requestId}/?user_id=${userId}`, {});
     alert('Prośba została wycofana.');
     window.location.reload();
   }
@@ -150,11 +128,7 @@ const handleWithdraw = async (requestId,userId) => {
 const handleDelete = async (rideId) => {
   const token = localStorage.getItem('accessToken');
   try {
-    await axios.post(`http://127.0.0.1:8000/api/rides/delete/${rideId}/`, {}, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+    await axiosInstance.post(`rides/delete/${rideId}/`, {});
     alert('Przejazd został usunięty');
     window.location.reload();
   }
@@ -167,11 +141,7 @@ const handleDelete = async (rideId) => {
 const handleProgress = async (rideId) => {
   const token = localStorage.getItem('accessToken');
   try {
-    await axios.post(`http://127.0.0.1:8000/api/rides/progress/${rideId}/`, {}, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+    await axiosInstance.post(`rides/progress/${rideId}/`, {});
     alert('Zmiana statusu przejazdu powiodła się.');
     window.location.reload();
   }
