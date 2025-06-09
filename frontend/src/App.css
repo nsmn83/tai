@@ -1,44 +1,296 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+
+/* Styl narzucony dla całej strony */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color:  #206a5d;
+    background-image: linear-gradient(to bottom right, #206a5d, #c6aa58b2);
+}
+
+/* styl narzucony przyciskom */
+button {
+    align-self: center;
+    width: 50%;
+    background-color: #e6e6e6;
+    border-radius: 15px;
+    font-weight: bold;
+    color: #333333;
+}
+
+button:hover {
+    background-color: #d6d85b;
 }
 
 
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* styl paska nawigacji */
+nav {
+    background-color: #333333;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 45px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    z-index: 1000;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* styl listy w pasku nawigacji */
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    padding: 0;
 }
 
-.card {
-  padding: 2em;
+/* styl linków w pasku nawigacji */
+nav ul li a {
+    padding: 10px;
+    color: #e6e6e6;
+    font-weight: bold;
 }
 
-.read-the-docs {
-  color: #888;
+/* styl dla inputów */
+input {
+    padding: 10px;
+    border: 1px solid white;
+    border-radius: 10px;
+}
+
+textarea {
+    width: 50%;
+    min-height: 50px;
+    padding: 10px;
+    border: 1px solid white;
+    border-radius: 10px;
+}
+
+/* styl kontenera do rejestracji / logowania */
+.form-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    flex-direction: column;
+    background-color: #333333; 
+    padding: 20px;
+    border-radius: 15px;
+    min-width: 300px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 1);
+    color: white;
+    gap: 10px;
+}
+
+/* styl kontenera zawierajacego "tresc" danej podstrony */
+.content-container {
+    margin-top: 90px;
+    min-width: 500px;
+    background-color: #333333;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 1);
+    border-radius: 15px;
+    display: flex;       
+    flex-direction: column; 
+    gap: 10px;   
+}
+
+.detail-container {
+    background-color: #333333;
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 1);
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    flex-direction: columns;       
+    gap: 20px;   
+}
+
+/* styl pojedynczego elementu listy w body (np. lista przejazdow) */
+.list-element {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    background-color: #e6e6e6;
+    border-radius: 15px; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 1); 
+    padding: 5px; 
+    margin-bottom: 15px; 
+    margin-left: -40px;
+    list-style-type: none;
+    cursor: pointer;
+    color: #333333;
+    gap: 5px;
+}
+
+
+.passenger-list-element {
+    border: 1px solid #333333;
+    display: flex;
+    flex-direction: column;
+    background-color: #e6e6e6;
+    border-radius: 15px; 
+    padding: 5px; 
+    margin-bottom: 15px; 
+    margin-left: -40px;
+    list-style-type: none;
+    color: #333333;
+    gap: 5px;
+}
+
+
+.list-element:hover {
+    background-color: #96da90;
+}
+
+.button-group {
+  margin-left: auto;
+  display: flex;
+  gap: 5px;
+}
+
+
+.decision-button {
+    border: 1px solid #333333;
+    border-radius: 15px;
+    font-weight: bold;
+    color: #333333;
+    width: 30%;
+    margin: 5px;
+}
+
+
+/* styl fragmentu elementu listy (np. data, godzina) */
+.list-element-subelement {
+    padding: 10px;
+    margin: 5px;
+    background-color: #59f1e5;
+    /* #ffd6f3 */ /* #6ade91 */
+    border-radius: 15px;
+    border-color: #333333;
+}
+
+/* styl dla okienka do filtracji / wprowadzania nowych przejazdów */
+.searchbox {
+    background-color: #333333;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 15px;
+    border-radius: 15px;
+    border: 1px solid white;
+
+}
+
+.filter-button {
+    width: 200px;
+    margin-left: auto;
+    align-self: flex-end;
+    
+}
+
+.detail-page {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 60px;
+    padding: 20px;
+}
+
+.details {
+    min-width: 500px;
+    margin: 5px;
+    font-weight: bold;
+    color: #333333;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding: 10px;
+    gap: 5px;
+    border-radius: 15px;
+    border: 1px solid white;
+}
+
+.details-description-element {
+    flex-wrap: wrap;
+    background-color: #ffffffd7;
+    border-radius: 15px;
+    padding: 10px;
+    margin: 5px;
+
+    white-space: normal;
+    overflow-wrap: break-word;  
+    word-break: break-word;      
+    max-width: 100%; 
+}
+
+.request-button {
+    margin: 5px;
+    align-self:flex-start;
+}
+
+.title {
+    align-self: center;
+    color:white;
+}
+
+.navigation-title {
+    margin-left: auto;
+    margin-right: 60px;
+}
+
+.status-accepted {
+    background-color: #59d459e3; 
+}
+
+.status-rejected {
+    background-color: #e05656b7; 
+}
+
+.status-waiting {
+    background-color: #fcef77; 
+}
+
+.titlebox {
+    display: flex;
+    padding: 5px;
+    justify-content: center;
+    border-radius: 15px;
+    border: 1px solid white;
+}
+
+.request-status-waiting {
+    background-color: #fff3cd;
+    border: 5px solid #ffc107;
+}
+
+.request-status-accepted {
+    background-color: #9feeb2;
+    border: 5px solid #28a745;
+}
+
+.request-status-rejected {
+    background-color: #f8d7da;
+    border: 5px solid #dc3545;
+}
+
+/* mapa */
+.leaflet-container {
+    width: 500px;
+    height: 500px;
+}
+
+.map-container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+}
+
+.leaflet-routing-container {
+    display: none;
 }

@@ -1,6 +1,7 @@
 import React, {use, useState} from 'react';
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
 
 export default function Home() {
 
@@ -69,18 +70,18 @@ export default function Home() {
             {error && <p style={{color:"red"}}>{error}</p>}
             {successMessage && <p style={{color:"green"}}>{successMessage}</p>}
             <h2>Register</h2>
-            <label>username</label><br/>
-            <input type="text" name="username" value={formData.username} onChange={handleChange}></input> <br/>
-            <label>email</label><br/>
-            <input type="email" name="email" value={formData.email} onChange={handleChange}></input> <br/>
-            <label>password</label><br/>
-            <input type="password" name="password1" value={formData.password1} onChange={handleChange}></input> <br/>
-            <label>confirm password:</label><br/>
-            <input type="password" name="password2" value={formData.password2} onChange={handleChange}></input> <br/>
+            <input placeholder='Wprowadź nazwę użytkownika' type="text" name="username" value={formData.username} onChange={handleChange}></input> <br/>
+            <input placeholder='Wprowadź adres e-mail' type="email" name="email" value={formData.email} onChange={handleChange}></input> <br/>
+            <input placeholder='Wprowadź hasło' type="password" name="password1" value={formData.password1} onChange={handleChange}></input> <br/>
+            <input placeholder='Powtórz hasło' type="password" name="password2" value={formData.password2} onChange={handleChange}></input> <br/>
             <br/>
             <button type="submit" disabled={isLoading} onClick={handleSubmit}>
                 Register
             </button>
+            <p>
+                Masz już konto? <Link to="/login" className="text-blue-500 hover:underline">Zaloguj się!</Link>
+            </p>
+
 
 
         </div>

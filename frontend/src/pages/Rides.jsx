@@ -1,49 +1,121 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
-import axios from "axios"
+import React, { useState, useEffect } from 'react';
+import axiosInstance from '../utils/axiosInstance';
+import { useNavigate } from 'react-router-dom';
 
 function Rides() {
-    const przejazdy = [
-        {
-            id: 1,
-            start: "Warszawa",
-            koniec: "Kraków",
-            kierowca: "Jan Kowalski",
-            data: "2025-04-22",
-            godzina: "08:30"
-        },
-        {
-            id: 2,
-            start: "Gdańsk",
-            koniec: "Poznań",
-            kierowca: "Anna Nowak",
-            data: "2025-04-23",
-            godzina: "14:15"
-        },
-        {
-            id: 3,
-            start: "Wrocław",
-            koniec: "Łódź",
-            kierowca: "Piotr Zieliński",
-            data: "2025-04-24",
-            godzina: "10:00"
-        }
-    ];
-    return (
-        <div className="rides-container">
-            <h2 className="text-xl font-bold mb-4">Lista przejazdów</h2>
-            <ul>
-                {przejazdy.map(przejazd => (
-                    <li key={przejazd.id} className="ride-item">
-                        <p><strong>Trasa: </strong> {przejazd.start} - {przejazd.koniec}
-                        <strong> Data: </strong> {przejazd.data}
-                        <strong> Godzina: </strong> {przejazd.godzina}</p>
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
+  const navigate = useNavigate();
 
+  const [rides, setRides] = useState([]);
+  const [filteredRides, setFilteredRides] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const [searchVal, setSearchVal] = useState('');
+  const [searchVal2, setSearchVal2] = useState('');
+  const [searchDate, setSearchDate] = useState('');
+
+
+  // Fetch all rides
+const fetchRides = () => {
+  const token = localStorage.getItem('accessToken');
+  setLoading(true);
+  setError(null);
+
+  axiosInstance
+    .get('rides/all/')
+    .then(res => {
+      setRides(res.data);
+      setFilteredRides(res.data);
+      setLoading(false);
+    })
+    .catch(err => {
+      console.error(err);
+      setError('Nie udało się załadować przejazdów.');
+      setLoading(false);
+    });
+};
+
+
+  useEffect(() => {
+    fetchRides();
+  }, [navigate]);
+
+  const handleClick = (ride) => {
+    navigate(`/przejazd/${ride.id}`, { state: { przejazd: ride } });
+  };
+
+  // Filter rides based on search inputs
+  const handleSearchClick = () => {
+    if (searchVal === '' && searchVal2 === '' && searchDate === '') {
+      setFilteredRides(rides);
+      return;
+    }
+
+    const filtered = rides.filter((ride) => {
+      const matchesStart = ride.start_address?.toLowerCase().includes(searchVal.toLowerCase());
+      const matchesEnd = ride.end_address?.toLowerCase().includes(searchVal2.toLowerCase());
+      const matchesDate = searchDate === '' || ride.start_time?.slice(0, 10) === searchDate;
+
+      return matchesStart && matchesEnd && matchesDate;
+    });
+
+    setFilteredRides(filtered);
+  };
+
+  return (
+    <div className="content-container">
+      <div className="searchbox">
+        <input
+          placeholder="Miejsce wyjazdu"
+          value={searchVal}
+          onChange={(e) => setSearchVal(e.target.value)}
+          className="search-input"
+        />
+        <input
+          placeholder="Miejsce docelowe"
+          value={searchVal2}
+          onChange={(e) => setSearchVal2(e.target.value)}
+          className="search-input"
+        />
+        <input
+          type="date"
+          value={searchDate}
+          onChange={(e) => setSearchDate(e.target.value)}
+          className="search-input"
+        />
+        <button className="filter-button" onClick={handleSearchClick}>Filtruj</button>
+      </div>
+
+      {loading && <p>Ładowanie...</p>}
+      {error && <p className="error">{error}</p>}
+
+      <ul>
+        {filteredRides.map((ride) => (
+          <li
+            key={ride.id}
+            className="list-element"
+            onClick={() => handleClick(ride)}
+          >
+            <p>
+              <strong className="list-element-subelement">
+                Trasa: {ride.start_address} - {ride.end_address}
+              </strong>
+            </p>
+            <p>
+              <strong className="list-element-subelement">
+                Data: {ride.start_time?.slice(0, 10)}
+              </strong>
+            </p>
+            <p>
+              <strong className="list-element-subelement">
+                Godzina wyjazdu: {ride.start_time?.slice(11, 16)}
+              </strong>
+            </p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
 export default Rides;
