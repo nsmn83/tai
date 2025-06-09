@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderTimedOut
+from django.utils.dateparse import parse_date
 
 from .models import Ride, PassengerRequest
 from .serializers import RideSerializer, PassengerRequestSerializer
@@ -85,12 +86,51 @@ def MyRidesAPIView(request):
     return Response(serializer.data)
 
 
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework import permissions
+from django.utils.dateparse import parse_date
+from .models import Ride
+from .serializers import RideSerializer
+
+
 @api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
+@permission_classes([permissions.AllowAny])
 def AllRidesAPIView(request):
-    all_rides = Ride.objects.exclude(status__in=['done', 'deleted']).order_by('start_time')
-    serializer = RideSerializer(all_rides, many=True)
-    return Response(serializer.data)
+    try:
+        rides = Ride.objects.exclude(status__in=['done', 'deleted']).order_by('start_time')
+
+        start_address = request.query_params.get('start_address')
+        end_address = request.query_params.get('end_address')
+        date_str = request.query_params.get('date')
+
+        if start_address:
+            rides = rides.filter(start_address__icontains=start_address)
+
+        if end_address:
+            rides = rides.filter(end_address__icontains=end_address)
+
+        if date_str:
+            date = parse_date(date_str)
+            if date:
+                rides = rides.filter(start_time__date=date)
+            else:
+                return Response(
+                    {"detail": "Niepoprawny format daty, oczekiwano YYYY-MM-DD."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+        serializer = RideSerializer(rides, many=True)
+        return Response(serializer.data)
+
+    except Exception as e:
+        # W przypadku wyjątku zwracamy szczegóły i kod 500
+        return Response(
+            {"detail": f"Wystąpił błąd serwera: {str(e)}"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
 
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
