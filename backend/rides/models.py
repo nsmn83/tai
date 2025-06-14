@@ -17,7 +17,6 @@ class Ride(models.Model):
     end_lat = models.FloatField(null=True, blank=True)
     end_lng = models.FloatField(null=True, blank=True)
     start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
     max_passengers = models.PositiveIntegerField()
     driver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="drives")
     created_at = models.DateTimeField(auto_now_add=True)

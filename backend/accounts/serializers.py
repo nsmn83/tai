@@ -2,11 +2,20 @@ from .models import CustomUser
 from rest_framework import serializers
 from django.contrib.auth import  authenticate
 from .models import Profile
+from rest_framework.generics import UpdateAPIView
+from rest_framework.permissions import IsAuthenticated
 
 class CustomUSerSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ("id", "username", "email")
+        fields = ("id", "username", "bio", "profile_image_url", "email", "date_joined")
+
+
+
+class UserSummarySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUSerSerializer
+        fields = ("id", "username", "email", "bio", "profile_image_url", "date_joined")
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(write_only=True)
@@ -45,3 +54,11 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = '__all__'
+
+
+class UpdateBioAPIView(UpdateAPIView):
+    serializer_class = CustomUSerSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user

@@ -6,7 +6,7 @@ User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email']
+        fields = ['id', 'username', 'profile_image_url', 'bio', 'email']
 
 class PassengerRequestSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
@@ -28,6 +28,8 @@ class RideSerializer(serializers.ModelSerializer):
         return {
             "id": obj.driver.id,
             "username": obj.driver.username,
+            "profile_image_url": obj.driver.profile_image_url,
+            "bio": obj.driver.bio,
             "email": obj.driver.email,
         }
 

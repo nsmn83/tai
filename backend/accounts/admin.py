@@ -7,8 +7,9 @@ from django.contrib.auth.admin import UserAdmin
 class CustomAdminUser(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
-
     model = CustomUser
+
+    list_display = ('username', 'email', 'is_staff', 'profile_image_url')
 
 
 # Register your models here.
