@@ -1,13 +1,12 @@
-from django.shortcuts import render
-from django.shortcuts import render
 from rest_framework import generics, permissions,  serializers, viewsets, status
-from rest_framework.decorators import api_view, permission_classes, action
-from rest_framework.response import Response
 from rest_framework.views import APIView
 from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderTimedOut
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework import permissions
 from django.utils.dateparse import parse_date
-
 from .models import Ride, PassengerRequest
 from .serializers import RideSerializer, PassengerRequestSerializer
 # Create your views here.
@@ -58,10 +57,14 @@ class RequestToJoinRideAPIView(generics.CreateAPIView):
         ride_id = self.request.data.get('ride')
         ride = Ride.objects.get(id=ride_id)
 
-        if ride.driver == self.request.user:
-            raise serializers.ValidationError("Nie możesz dołączyć do swojego własnego przejazdu.")
+        # Sprawdzenie czy istnieje już prośba
+        existing_request = PassengerRequest.objects.filter(user=self.request.user, ride=ride).first()
 
-        serializer.save(user=self.request.user, ride_id=ride_id)
+        if existing_request:
+            existing_request.status = 'waiting'
+            existing_request.save()
+        else:
+            serializer.save(user=self.request.user, ride=ride)
 
 class RideDetailAPIView(generics.RetrieveAPIView):
     queryset = Ride.objects.all()
@@ -84,15 +87,6 @@ def MyRidesAPIView(request):
 
     serializer = RideSerializer(all_rides, many=True)
     return Response(serializer.data)
-
-
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework import permissions
-from django.utils.dateparse import parse_date
-from .models import Ride
-from .serializers import RideSerializer
 
 
 @api_view(['GET'])
@@ -174,6 +168,12 @@ class AcceptPassengerRequestAPIView(APIView):
         if pr.ride.driver != request.user:
             return Response({'detail': 'Brak uprawnień.'}, status=status.HTTP_403_FORBIDDEN)
 
+        ride = pr.ride
+        accepted_count = PassengerRequest.objects.filter(ride=ride, status='accepted').count()
+
+        if accepted_count >= ride.max_passengers:
+            return Response({'status': 'waiting'})
+
         pr.status = 'accepted'
         pr.save()
         return Response({'status': 'accepted'})
@@ -227,9 +227,8 @@ class DeleteRideAPIView(APIView):
             return Response({'detail': 'Brak uprawnień.'}, status=status.HTTP_403_FORBIDDEN)
 
         PassengerRequest.objects.filter(ride=rd).update(status='rejected')
-        rd.status = 'deleted'
-        rd.save()
-        return Response({'status': 'deleted'})
+        rd.delete()
+        return Response({'status': 'deleted'}, status=status.HTTP_204_NO_CONTENT)
 
 class ProgressRideAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
