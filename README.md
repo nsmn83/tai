@@ -1,5 +1,4 @@
 # TAI
-## Technologie Aplikacji Internetowych - projekt zaliczeniowy 🚗
-Repozytorium zawiera projekt (w trakcie realizacji), którego celem utworzenie jest aplikacji internetowej "Driver".
-Aplikacja będzie służyła to wyszukiwania współpasażerów do podróży samochodem, będzie zintegrowana z API generującym
+## Aplikacje Mobilne / Technologie Aplikacji Internetowych - projekt zaliczeniowy 🚗
+Repozytorium zawiera backend do aplikacji na przedmiot TAI oraz Aplikacje Mobilne
 mapy z zaznaczoną trasą.
